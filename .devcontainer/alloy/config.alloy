@@ -1,4 +1,27 @@
 logging {
-  level  = "info"
-  format = "logfmt"
+      level  = "debug"
+      format = "logfmt"
+    }
+
+livedebugging {
+  enabled = true
+}
+otelcol.receiver.otlp "demo" {
+  grpc {
+    endpoint = "0.0.0.0:4318"
+  }
+  output {
+    metrics = [otelcol.exporter.otlphttp.prometheus.input]
+  }
+}
+
+
+otelcol.exporter.otlphttp "prometheus" {
+  client {
+    endpoint = "prometheus-operated:9090"        
+    tls {
+      insecure = true
+    }        
+  }
+  metrics_endpoint =  "http://prometheus:9090/api/v1/otlp/v1/metrics"
 }

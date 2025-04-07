@@ -11,13 +11,20 @@ services:
     network_mode: service:prometheus
 
   prometheus:
-    image: prom/prometheus:latest
+    image: prom/prometheus:v3.2.1
     volumes:
       - prometheus-data:/prometheus
       - ./prometheus:/etc/prometheus
     command:
+      - '--web.console.templates=/etc/prometheus/consoles'
+      - '--web.console.libraries=/etc/prometheus/console_libraries'
+      - '--storage.tsdb.retention.time=1h'
       - '--config.file=/etc/prometheus/prometheus.yml'
       - '--storage.tsdb.path=/prometheus'
+      - '--web.enable-lifecycle'
+      - '--web.route-prefix=/'
+      - '--web.enable-otlp-receiver'
+      - '--enable-feature=exemplar-storage'
     ports:
       - "9090:9090"
 
