@@ -1,0 +1,8 @@
+#
+.debug/**
+
+# Helm
+charts/**/charts/**
+Chart.lock
+
+#
